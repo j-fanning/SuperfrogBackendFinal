@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -98,5 +99,20 @@ public class SpiritDirectorService {
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    public List<User> getRoster() {
+        List<User> enabledUsers = userRepository.findByEnabled(true);
+        //List<User> finalList = new ArrayList<>();
+        //enabledUsers.forEach(user -> {
+        //    Set<Role> roles = user.getRoles();
+        //   roles.forEach(role -> {
+        //        if(role.equals("STUDENT")){
+        //            finalList.add(user);
+        //        }
+        //    });
+        //});
+        //return finalList;
+        return enabledUsers;
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/students")
+@RequestMapping("/api/students")
 @PreAuthorize("hasRole('STUDENT') or hasRole('DIRECTOR')")
 public class StudentController {
     private StudentService service;
@@ -32,11 +32,8 @@ public class StudentController {
         return new Result(true, StatusCode.SUCCESS, "Find One Success", service.findById(id));
     }
 
-    @PostMapping()
-    public Result save(@RequestBody User user){
-        service.save(user);
-        return new Result(true, StatusCode.SUCCESS, "Save Success");
-    }
+    //doesn't need a add new customer option here because the only time a Student account is created is when
+    //a dirctor makes one, this is in director controller.
 
     @PutMapping("/{id}")
     public Result update(@PathVariable Long id, @RequestBody User user){

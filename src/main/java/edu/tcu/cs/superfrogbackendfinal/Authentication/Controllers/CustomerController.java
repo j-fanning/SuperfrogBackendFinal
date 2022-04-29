@@ -39,12 +39,14 @@ public class CustomerController {
     }
 
     @PutMapping("/{customerId}")
+    @PreAuthorize("hasRole('CUSTOMER') or hasRole('DIRECTOR')")
     public Result update(@PathVariable Long customerId, @RequestBody User updatedCustomer){
         customerService.update(customerId, updatedCustomer);
         return new Result(true, StatusCode.SUCCESS, "Update Success");
     }
 
     @DeleteMapping("/{customerId}")
+    @PreAuthorize("hasRole('DIRECTOR')")
     public Result delete(@PathVariable Long customerId){
         customerService.delete(customerId);
         return new Result(true, StatusCode.SUCCESS, "Delete Success");
