@@ -10,8 +10,11 @@ import java.util.List;
 
 @Entity
 public class Appearance {
+    //First, last, number, email, date, timerange, address, theme
     @Id
     private Integer id;
+    private String firstName;
+    private String lastName;
     private Date date;
     @ManyToMany(cascade = CascadeType.ALL)
     @JsonIgnore
@@ -105,4 +108,19 @@ public class Appearance {
         this.students.remove(student);
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 }

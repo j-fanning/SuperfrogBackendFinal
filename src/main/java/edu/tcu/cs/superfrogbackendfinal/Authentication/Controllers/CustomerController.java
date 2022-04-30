@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/api/customers")
 @PreAuthorize("hasRole('CUSTOMER') or hasRole('STUDENT') or hasRole('DIRECTOR')")
 public class CustomerController {
 
@@ -27,9 +27,9 @@ public class CustomerController {
         return result;
     }
 
-    @GetMapping("/{customerId}")
-    public Result findById(@PathVariable Long customerId){
-        return new Result(true, StatusCode.SUCCESS, "Find One Success", customerService.findById(customerId));
+    @GetMapping("/{customerId}/{currentId}")
+    public Result findById(@PathVariable Long customerId, @PathVariable Long currentId){
+        return customerService.findById(customerId, currentId);
     }
 
     @PostMapping()
