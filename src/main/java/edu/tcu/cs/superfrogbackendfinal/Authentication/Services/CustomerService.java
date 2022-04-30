@@ -46,21 +46,22 @@ public class CustomerService {
         for (Role role : roles){
             System.out.println("TEST");
             if (role.getName().equals(ERole.ROLE_DIRECTOR)){
-                return new Result(true, StatusCode.SUCCESS, "", fetchedUser);
+                return new Result(true, StatusCode.SUCCESS, "Find customer success!", fetchedUser);
             }
         }
         //if not only allow user with matching ID
         if (fetchedUser.getId() == userID){
-            return new Result(true, StatusCode.SUCCESS, "", fetchedUser);
+            return new Result(true, StatusCode.SUCCESS, "Find customer success!", fetchedUser);
         }
         else{
             return new Result(false, StatusCode.UNAUTHORIZED, "You can only view your own account");
         }
-
     }
 
     public void delete(Long id) {
-        userRepository.deleteById(id);
+        User user = userRepository.findById(id).get();
+        user.setEnabled(false);
+        userRepository.save(user);
     }
 
     public User save(User user) {
@@ -92,7 +93,7 @@ public class CustomerService {
             newRoles.add(userRole);
             user.setRoles(newRoles);
             userRepository.save(user);
-            System.out.println("TEST3");
+            //System.out.println("TEST3");
             return new Result(true, StatusCode.SUCCESS, "Updated Customer account!");
         }
         return new Result(false, StatusCode.UNAUTHORIZED, "Can only update your own account!");

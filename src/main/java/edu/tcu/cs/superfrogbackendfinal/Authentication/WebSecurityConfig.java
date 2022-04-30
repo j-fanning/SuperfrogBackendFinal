@@ -71,7 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/directors/**").hasRole("DIRECTOR")
                 .antMatchers("/api/customers/**").hasAnyRole("DIRECTOR","CUSTOMER")
-                .antMatchers("/api/students/**").hasRole("DIRECTOR")
+                .antMatchers("/api/students/**").hasAnyRole("STUDENT","DIRECTOR")
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/test/**").permitAll()
                 .antMatchers(h2ConsolePath + "/**").permitAll()

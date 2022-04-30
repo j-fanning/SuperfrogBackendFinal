@@ -7,6 +7,8 @@ import edu.tcu.cs.superfrogbackendfinal.Authentication.Payload.Request.SignupReq
 import edu.tcu.cs.superfrogbackendfinal.Authentication.Payload.Response.MessageResponse;
 import edu.tcu.cs.superfrogbackendfinal.Authentication.Repository.RoleRepository;
 import edu.tcu.cs.superfrogbackendfinal.Authentication.Repository.UserRepository;
+import edu.tcu.cs.superfrogbackendfinal.domain.Result;
+import edu.tcu.cs.superfrogbackendfinal.domain.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -47,15 +49,35 @@ public class SpiritDirectorService {
     }
 
     public void delete(Long id) {
-        userRepository.deleteById(id);
+        User user = userRepository.findById(id).get();
+        user.setEnabled(false);
+        userRepository.save(user);
     }
 
     public User save(User user) {
         return userRepository.save(user);
     }
 
-    public User update(Long id, User user) {
-        return userRepository.save(user);
+    public Result update(Long id, User user) {
+        //tempuser is user that is doing the updating
+        User tempUser = userRepository.getById(id);
+        //new password (if its changed)
+        String newPassword = user.getPassword();
+        Role userRole = roleRepository.findByName(ERole.ROLE_DIRECTOR).orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        Set<Role> newRoles = new HashSet<>();
+        Set<Role> roles = tempUser.getRoles();
+        for (Role role : roles) {
+            //System.out.println("TEST");
+            if (role.getName().equals(ERole.ROLE_DIRECTOR)) {
+                newPassword = encoder.encode(newPassword);
+                user.setPassword(newPassword);
+                newRoles.add(userRole);
+                user.setRoles(newRoles);
+                userRepository.save(user);
+                return new Result(true, StatusCode.SUCCESS, "Updated Director account!");
+            }
+        }
+        return new Result(true, StatusCode.SUCCESS, "Updated Director account!");
     }
 
     public boolean findByEmail(String email) {
