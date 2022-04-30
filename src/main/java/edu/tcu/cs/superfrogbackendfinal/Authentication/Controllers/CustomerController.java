@@ -40,9 +40,9 @@ public class CustomerController {
     }
 
     @PutMapping("/{Id}")
-    @PreAuthorize("hasRole('CUSTOMER') or hasRole('DIRECTOR')")
     public Result update(@PathVariable Long Id, @RequestBody User updatedCustomer){
         //ID is user that is requesting the update, updatedCustomer is the new data
+        System.out.println("TEST1");
         return customerService.update(Id, updatedCustomer);
     }
 
