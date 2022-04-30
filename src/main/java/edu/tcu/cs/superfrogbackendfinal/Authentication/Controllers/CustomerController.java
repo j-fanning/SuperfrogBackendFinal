@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/customers")
-@PreAuthorize("hasRole('CUSTOMER') or hasRole('STUDENT') or hasRole('DIRECTOR')")
+@PreAuthorize("hasRole('CUSTOMER') or hasRole('DIRECTOR')")
 public class CustomerController {
 
     private CustomerService customerService;
@@ -21,6 +21,7 @@ public class CustomerController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasRole('DIRECTOR')")
     public Result findAll(){
         List<User> all = customerService.findAll();
         Result result = new Result(true, StatusCode.SUCCESS, "Find All Success", all);
@@ -38,11 +39,11 @@ public class CustomerController {
         return new Result(true, StatusCode.SUCCESS, "Save Success");
     }
 
-    @PutMapping("/{customerId}")
+    @PutMapping("/{Id}")
     @PreAuthorize("hasRole('CUSTOMER') or hasRole('DIRECTOR')")
-    public Result update(@PathVariable Long customerId, @RequestBody User updatedCustomer){
-        customerService.update(customerId, updatedCustomer);
-        return new Result(true, StatusCode.SUCCESS, "Update Success");
+    public Result update(@PathVariable Long Id, @RequestBody User updatedCustomer){
+        //ID is user that is requesting the update, updatedCustomer is the new data
+        return customerService.update(Id, updatedCustomer);
     }
 
     @DeleteMapping("/{customerId}")

@@ -3,6 +3,7 @@ package edu.tcu.cs.superfrogbackendfinal.Authentication.Services;
 import edu.tcu.cs.superfrogbackendfinal.Authentication.Models.ERole;
 import edu.tcu.cs.superfrogbackendfinal.Authentication.Models.Role;
 import edu.tcu.cs.superfrogbackendfinal.Authentication.Models.User;
+import edu.tcu.cs.superfrogbackendfinal.Authentication.Repository.RoleRepository;
 import edu.tcu.cs.superfrogbackendfinal.Authentication.Repository.UserRepository;
 import edu.tcu.cs.superfrogbackendfinal.domain.Result;
 import edu.tcu.cs.superfrogbackendfinal.domain.StatusCode;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -21,12 +23,14 @@ public class CustomerService {
      * Repository for basic operations: findAll(), findById(), delete(), save(), update()
      */
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     @Autowired
     PasswordEncoder encoder;
 
     @Autowired
-    public CustomerService(UserRepository userRepository) {
+    public CustomerService(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     public List<User> findAll() {
@@ -63,8 +67,50 @@ public class CustomerService {
         return userRepository.save(user);
     }
 
-    public User update(Long id, User user) {
-        return userRepository.save(user);
+    public Result update(Long id, User user) {
+        //tempuser is user that is doing the updating
+        User tempUser = userRepository.getById(id);
+        //new password (if its changed)
+        String newPassword = user.getPassword();
+        String oldPassword = userRepository.getById(user.getId()).getPassword();
+        Role userRole = roleRepository.findByName(ERole.ROLE_CUSTOMER).orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        Set<Role> newRoles = new HashSet<>();
+        Set<Role> roles = tempUser.getRoles();
+        for (Role role : roles) {
+            //System.out.println("TEST");
+            if (role.getName().equals(ERole.ROLE_DIRECTOR)) {
+                if (encoder.matches(newPassword, oldPassword)) {
+                    newRoles.add(userRole);
+                    user.setRoles(newRoles);
+                    userRepository.save(user);
+                    return new Result(true, StatusCode.SUCCESS, "Updated Customer account!");
+                }
+                else {
+                    newPassword = encoder.encode(newPassword);
+                    user.setPassword(newPassword);
+                    newRoles.add(userRole);
+                    user.setRoles(newRoles);
+                    userRepository.save(user);
+                    return new Result(true, StatusCode.SUCCESS, "Updated Customer account!");
+                }
+            }
+        }
+        if(tempUser.getId() == id) {
+            if (encoder.matches(newPassword, oldPassword)) {
+                newRoles.add(userRole);
+                user.setRoles(newRoles);
+                userRepository.save(user);
+                return new Result(true, StatusCode.SUCCESS, "Updated Customer account!");
+            } else {
+                newPassword = encoder.encode(newPassword);
+                user.setPassword(newPassword);
+                newRoles.add(userRole);
+                user.setRoles(newRoles);
+                userRepository.save(user);
+                return new Result(true, StatusCode.SUCCESS, "Updated Customer account!");
+            }
+        }
+        return new Result(false, StatusCode.UNAUTHORIZED, "Can only update your own account!");
     }
 
     public boolean findByEmail(String email) {
