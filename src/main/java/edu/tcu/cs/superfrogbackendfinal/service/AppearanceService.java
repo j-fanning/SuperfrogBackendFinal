@@ -17,8 +17,8 @@ public class AppearanceService {
         this.appearanceDao = appearanceDao;
     }
 
-    public List<Appearance> findAll(){
-        return appearanceDao.findAll();
+    public List<Appearance> findPending(){
+        return appearanceDao.findByPending(true);
     }
 
     public Appearance findById(Integer id) {

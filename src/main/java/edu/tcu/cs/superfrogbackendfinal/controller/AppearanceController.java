@@ -19,9 +19,9 @@ public class AppearanceController {
         this.appearanceService = appearanceService;
     }
 
-    @GetMapping()
-    public Result findAll(){
-        List<Appearance> all = appearanceService.findAll();
+    @GetMapping("/pending")
+    public Result findPending(){
+        List<Appearance> all = appearanceService.findPending();
         Result result = new Result(true, StatusCode.SUCCESS, "Find All Success", all);
         return result;
     }

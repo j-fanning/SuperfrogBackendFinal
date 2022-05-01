@@ -43,7 +43,7 @@ public class SpiritDirectorService {
         List<User> allUsers = userRepository.findAll();
         List<User> allDirectors = new ArrayList<>();
         Set<Role> newRoles;
-        for(int i = 0; i < allUsers.size(); i++){
+        for (int i = 0; i < allUsers.size(); i++) {
             newRoles = allUsers.get(i).getRoles();
             for (Role role : newRoles) {
                 //System.out.println("TEST");
@@ -136,17 +136,18 @@ public class SpiritDirectorService {
     }
 
     public List<User> getRoster() {
-        List<User> enabledUsers = userRepository.findByEnabled(true);
-        //List<User> finalList = new ArrayList<>();
-        //enabledUsers.forEach(user -> {
-        //    Set<Role> roles = user.getRoles();
-        //   roles.forEach(role -> {
-        //        if(role.equals("STUDENT")){
-        //            finalList.add(user);
-        //        }
-        //    });
-        //});
-        //return finalList;
-        return enabledUsers;
+        List<User> allUsers = userRepository.findAll();
+        List<User> allActive = new ArrayList<>();
+        Set<Role> newRoles;
+        for (int i = 0; i < allUsers.size(); i++) {
+            newRoles = allUsers.get(i).getRoles();
+            for (Role role : newRoles) {
+                //System.out.println("TEST");
+                if (role.getName().equals(ERole.ROLE_STUDENT) & allUsers.get(i).isEnabled()) {
+                    allActive.add(allUsers.get(i));
+                }
+            }
+        }
+        return allActive;
     }
 }

@@ -41,11 +41,15 @@ public class User {
     @JsonIgnore
     private List<Appearance> appearances = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
+    private List<Appearance> customerRequests = new ArrayList<>()
+            ;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+    @Column(nullable = false, columnDefinition = "BOOLEAN")
     private boolean enabled = true;
 
     public User() {
