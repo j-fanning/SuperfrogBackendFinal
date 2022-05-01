@@ -48,6 +48,8 @@ public class User {
     private Set<Role> roles = new HashSet<>();
     private boolean enabled = true;
 
+    private String resetToken;
+
     public User() {
     }
 
@@ -109,5 +111,13 @@ public class User {
     }
 
     public void removeApperance(Appearance appearance) {
+    }
+
+    public String getResetToken() {
+        return resetToken;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
     }
 }
