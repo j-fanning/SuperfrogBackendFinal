@@ -42,10 +42,16 @@ public class SpiritDirectorService {
     public List<User> findAll() {
         List<User> allUsers = userRepository.findAll();
         List<User> allDirectors = new ArrayList<>();
-        for(int i = 0; i < allUsers.size(); i++)
-            if (allUsers.get(i).getRoles().contains(ERole.ROLE_CUSTOMER)){
-                allDirectors.add(allUsers.get(i));
+        Set<Role> newRoles;
+        for(int i = 0; i < allUsers.size(); i++){
+            newRoles = allUsers.get(i).getRoles();
+            for (Role role : newRoles) {
+                //System.out.println("TEST");
+                if (role.getName().equals(ERole.ROLE_DIRECTOR)) {
+                    allDirectors.add(allUsers.get(i));
+                }
             }
+        }
         return allDirectors;
     }
 

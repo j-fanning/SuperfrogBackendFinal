@@ -33,13 +33,18 @@ public class StudentService {
     }
 
     public List<User> findAll() {
-
         List<User> allUsers = userRepository.findAll();
         List<User> allStudents = new ArrayList<>();
-        for(int i = 0; i < allUsers.size(); i++)
-            if (allUsers.get(i).getRoles().contains(ERole.ROLE_STUDENT)){
-                allStudents.add(allUsers.get(i));
+        Set<Role> newRoles;
+        for(int i = 0; i < allUsers.size(); i++){
+            newRoles = allUsers.get(i).getRoles();
+            for (Role role : newRoles) {
+                //System.out.println("TEST");
+                if (role.getName().equals(ERole.ROLE_STUDENT)) {
+                    allStudents.add(allUsers.get(i));
+                }
             }
+        }
         return allStudents;
     }
 
