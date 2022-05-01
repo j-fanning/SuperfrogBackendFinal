@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,7 +33,14 @@ public class StudentService {
     }
 
     public List<User> findAll() {
-        return userRepository.findAll();
+
+        List<User> allUsers = userRepository.findAll();
+        List<User> allStudents = new ArrayList<>();
+        for(int i = 0; i < allUsers.size(); i++)
+            if (allUsers.get(i).getRoles().contains(ERole.ROLE_STUDENT)){
+                allStudents.add(allUsers.get(i));
+            }
+        return allStudents;
     }
 
 

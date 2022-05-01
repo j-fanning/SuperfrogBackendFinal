@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
@@ -34,7 +31,13 @@ public class CustomerService {
     }
 
     public List<User> findAll() {
-        return userRepository.findAll();
+        List<User> allUsers = userRepository.findAll();
+        List<User> allCustomers = new ArrayList<>();
+        for(int i = 0; i < allUsers.size(); i++)
+            if (allUsers.get(i).getRoles().contains(ERole.ROLE_CUSTOMER)){
+                allCustomers.add(allUsers.get(i));
+            }
+        return allCustomers;
     }
 
 

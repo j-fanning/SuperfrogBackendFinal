@@ -40,7 +40,13 @@ public class SpiritDirectorService {
     }
 
     public List<User> findAll() {
-        return userRepository.findAll();
+        List<User> allUsers = userRepository.findAll();
+        List<User> allDirectors = new ArrayList<>();
+        for(int i = 0; i < allUsers.size(); i++)
+            if (allUsers.get(i).getRoles().contains(ERole.ROLE_CUSTOMER)){
+                allDirectors.add(allUsers.get(i));
+            }
+        return allDirectors;
     }
 
 

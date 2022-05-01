@@ -5,6 +5,7 @@ import edu.tcu.cs.superfrogbackendfinal.domain.Appearance;
 import edu.tcu.cs.superfrogbackendfinal.domain.Result;
 import edu.tcu.cs.superfrogbackendfinal.domain.StatusCode;
 import edu.tcu.cs.superfrogbackendfinal.service.AppearanceService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class AppearanceController {
     }
 
     @PostMapping()
+    @PreAuthorize("hasRole('CUSTOMER')")
     public Result save(@RequestBody Appearance newAppearance){
         appearanceService.save(newAppearance);
         return new Result(true, StatusCode.SUCCESS, "Save Success");
