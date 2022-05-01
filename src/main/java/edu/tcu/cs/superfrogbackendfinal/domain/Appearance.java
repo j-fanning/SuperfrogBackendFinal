@@ -24,7 +24,6 @@ public class Appearance {
     //   @JsonIgnore
     //    private List<User> students = new ArrayList<>();
     //all appearances are pending initially.
-    @Column(nullable = false, columnDefinition = "BOOLEAN")
     private boolean pending = true;
     private String theme;
     private String milageRange;
