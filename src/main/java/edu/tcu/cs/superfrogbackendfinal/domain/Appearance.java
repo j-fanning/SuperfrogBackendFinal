@@ -20,9 +20,9 @@ public class Appearance {
     private String number;
     private String email;
     private String date;
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<User> students = new ArrayList<>();
+    //   @ManyToMany(cascade = CascadeType.ALL)
+    //   @JsonIgnore
+    //    private List<User> students = new ArrayList<>();
     //all appearances are pending initially.
     @Column(nullable = false, columnDefinition = "BOOLEAN")
     private boolean pending = true;
@@ -32,8 +32,8 @@ public class Appearance {
     private String startTime;
     private String endTime;
     private String address;
-    @ManyToOne
-    private User customer;
+    //    @ManyToOne
+    //    private User customer;
 
     public Appearance() {
     }
@@ -54,14 +54,14 @@ public class Appearance {
         this.date = date;
     }
 
-    public List<User> getStudents() {
+ /* public List<User> getStudents() {
         return students;
     }
 
     public void setStudents(List<User> students) {
         this.students = students;
     }
-
+*/
     public boolean isPending() {
         return pending;
     }
@@ -93,7 +93,7 @@ public class Appearance {
     public void setPrice(float price) {
         this.price = price;
     }
-
+/*
     public User getCustomer() {
         return customer;
     }
@@ -115,7 +115,7 @@ public class Appearance {
         // remove from students list
         this.students.remove(student);
     }
-
+*/
     public String getFirstName() {
         return firstName;
     }

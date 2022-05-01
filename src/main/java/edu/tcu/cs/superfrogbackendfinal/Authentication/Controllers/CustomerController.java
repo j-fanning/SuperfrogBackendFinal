@@ -30,7 +30,8 @@ public class CustomerController {
 
     @GetMapping("/{customerId}/{currentId}")
     public Result findById(@PathVariable Long customerId, @PathVariable Long currentId){
-        return customerService.findById(customerId, currentId);
+        Result result = customerService.findById(customerId, currentId);
+        return result;
     }
 
     @PostMapping()

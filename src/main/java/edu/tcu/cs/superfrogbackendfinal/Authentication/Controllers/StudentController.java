@@ -31,7 +31,8 @@ public class StudentController {
     //studentID is id of sdtudent being looked up
     @GetMapping("/{studentId}{currentId}")
     public Result findById(@PathVariable Long studentId, @PathVariable Long currentId){
-        return service.findById(studentId, currentId);
+        Result result = service.findById(studentId, currentId);
+        return result;
     }
 
     //doesn't need a add new student option here because the only time a Student account is created is when

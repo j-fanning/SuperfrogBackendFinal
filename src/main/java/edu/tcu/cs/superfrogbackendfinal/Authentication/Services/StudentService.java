@@ -71,7 +71,8 @@ public class StudentService {
     }
     public void delete(Long id) {
         User user = userRepository.findById(id).get();
-        user.setEnabled(false);
+        if(user.isEnabled()) user.setEnabled(false);
+        else user.setEnabled(true);
         userRepository.save(user);
     }
 

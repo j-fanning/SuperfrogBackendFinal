@@ -36,14 +36,14 @@ public class User {
     @NotBlank
     @Size(max = 120)
     private String password;
-
+/*
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "students")
     @JsonIgnore
     private List<Appearance> appearances = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
-    private List<Appearance> customerRequests = new ArrayList<>()
-            ;
+    private List<Appearance> customerRequests = new ArrayList<>();
+  */
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
