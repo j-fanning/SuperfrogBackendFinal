@@ -93,6 +93,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH"));
         configuration.setAllowCredentials(true);
         //the below three lines will add the relevant CORS response headers
+        configuration.addAllowedOrigin("https://superfrog-backend-final.herokuapp.com/");
         configuration.setAllowedHeaders(List.of("*"));
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
