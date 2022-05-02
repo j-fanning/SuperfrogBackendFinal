@@ -34,7 +34,8 @@ public class JwtUtils {
             return null;
         }
     }
-
+//for local testing of backend, remove secure = true. cookie will only be set in browser with it however, sameSite=none
+    //requires secure = true which only allows cookies to be set with https rather than http.
     public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal) {
         String jwt = generateTokenFromUsername(userPrincipal.getUsername());
         ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt).path("/api").maxAge(24 * 60 * 60).httpOnly(true).sameSite("none").secure(true).build();
