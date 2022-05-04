@@ -42,15 +42,14 @@ public class AppearanceService {
 
     public Result approve(Integer appearanceId) {
         Appearance appearance = appearanceDao.findById(appearanceId).get();
-        Integer range = Integer.valueOf(appearance.getMilageRange());
-        if (range <= 100) {
-            appearance.setPending(false);
-            appearanceDao.save(appearance);
-            return new Result(true, StatusCode.SUCCESS, "Appearance Approved");
-        }
-        else{
-            return new Result(false, StatusCode.FAILURE, "Must be under 100 Miles");
-        }
+        appearance.setPending(false);
+        appearanceDao.save(appearance);
+        return new Result(true, StatusCode.SUCCESS, "Appearance Approved");
+    }
 
+    public Result reject(Integer appearanceId) {
+        Appearance appearance = appearanceDao.findById(appearanceId).get();
+        appearanceDao.delete(appearance);
+        return new Result(true, StatusCode.SUCCESS, "Appearance Rejected");
     }
 }
