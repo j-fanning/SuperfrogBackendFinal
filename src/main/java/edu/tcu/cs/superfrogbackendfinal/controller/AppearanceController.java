@@ -27,8 +27,8 @@ public class AppearanceController {
     }
 
     @GetMapping("/{appearanceId}")
-    public Result findById(@PathVariable Integer customerId){
-        return new Result(true, StatusCode.SUCCESS, "Find One Success", appearanceService.findById(customerId));
+    public Result findById(@PathVariable Integer appearanceId){
+        return new Result(true, StatusCode.SUCCESS, "Find One Success", appearanceService.findById(appearanceId));
     }
 
     @PostMapping()
@@ -39,9 +39,16 @@ public class AppearanceController {
     }
 
     @PutMapping("/{appearanceId}")
+    @PreAuthorize("hasRole('DIRECTOR')")
     public Result update(@PathVariable Integer appearanceId, @RequestBody Appearance updatedAppearance){
         appearanceService.update(appearanceId, updatedAppearance);
         return new Result(true, StatusCode.SUCCESS, "Update Success");
+    }
+
+    @PutMapping("/approve/{appearanceId}")
+    @PreAuthorize("hasRole('DIRECTOR')")
+    public Result approve(@PathVariable Integer appearanceId){
+        return appearanceService.approve(appearanceId);
     }
 
     @DeleteMapping("/{appearanceId}")

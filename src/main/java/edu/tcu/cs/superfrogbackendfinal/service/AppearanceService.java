@@ -2,6 +2,8 @@ package edu.tcu.cs.superfrogbackendfinal.service;
 
 import edu.tcu.cs.superfrogbackendfinal.dao.AppearanceDao;
 import edu.tcu.cs.superfrogbackendfinal.domain.Appearance;
+import edu.tcu.cs.superfrogbackendfinal.domain.Result;
+import edu.tcu.cs.superfrogbackendfinal.domain.StatusCode;
 import org.springframework.stereotype.Service;
 
 
@@ -38,4 +40,17 @@ public class AppearanceService {
         appearanceDao.deleteById(id);
     }
 
+    public Result approve(Integer appearanceId) {
+        Appearance appearance = appearanceDao.findById(appearanceId).get();
+        Integer range = Integer.valueOf(appearance.getMilageRange());
+        if (range <= 100) {
+            appearance.setPending(false);
+            appearanceDao.save(appearance);
+            return new Result(true, StatusCode.SUCCESS, "Appearance Approved");
+        }
+        else{
+            return new Result(false, StatusCode.FAILURE, "Must be under 100 Miles");
+        }
+
+    }
 }
