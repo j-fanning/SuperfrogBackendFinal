@@ -51,10 +51,10 @@ public class AppearanceController {
         return appearanceService.approve(appearanceId);
     }
 
-    @PutMapping("/reject/{appearanceId}")
+    @DeleteMapping("/reject/{appearanceId}")
     @PreAuthorize("hasRole('DIRECTOR')")
     public Result reject(@PathVariable Integer appearanceId){
-        return appearanceService.approve(appearanceId);
+        return appearanceService.reject(appearanceId);
     }
 
     @DeleteMapping("/{appearanceId}")
